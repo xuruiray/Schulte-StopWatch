@@ -132,9 +132,6 @@
         inset 0 -30px 90px rgba(126, 112, 92, 0.10);
       backdrop-filter: blur(1.5px) saturate(0.96);
       color: #6a4632;
-      font-size: min(96px, calc((100vw - 28px) * 0.21));
-      font-weight: 820;
-      line-height: 1;
       letter-spacing: 0;
       font-variant-numeric: tabular-nums;
       pointer-events: none;
@@ -142,6 +139,26 @@
 
     .density-hint.show {
       display: grid;
+    }
+
+    .density-hint-inner {
+      display: grid;
+      justify-items: center;
+      align-items: center;
+      gap: 4px;
+      line-height: 1;
+    }
+
+    .density-level {
+      color: rgba(106, 70, 50, 0.62);
+      font-size: min(27px, calc((100vw - 28px) * 0.06));
+      font-weight: 760;
+    }
+
+    .density-value {
+      color: #6a4632;
+      font-size: min(96px, calc((100vw - 28px) * 0.21));
+      font-weight: 820;
     }
 
     .sector-cell {
@@ -532,7 +549,19 @@
 
       board.innerHTML = "";
       board.appendChild(svg);
-      densityHint.textContent = String(density);
+      densityHint.replaceChildren();
+      if (!showNumbers) {
+        const hintInner = document.createElement("div");
+        hintInner.className = "density-hint-inner";
+        const levelLabel = document.createElement("span");
+        levelLabel.className = "density-level";
+        levelLabel.textContent = "LV";
+        const valueLabel = document.createElement("span");
+        valueLabel.className = "density-value";
+        valueLabel.textContent = String(density);
+        hintInner.append(levelLabel, valueLabel);
+        densityHint.appendChild(hintInner);
+      }
       densityHint.classList.toggle("show", !showNumbers);
       cells = [];
 

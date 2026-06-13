@@ -41,6 +41,7 @@ constexpr uint32_t _result_bg_color       = 0xFBF1E2;
 constexpr uint32_t _result_text_color     = 0x6A4632;
 constexpr uint32_t _number_stroke_color   = 0xFBF4E6;
 constexpr lv_opa_t _result_bg_opa         = 199;
+constexpr lv_opa_t _density_level_opa     = 158;
 constexpr uint16_t _hit_vibrate_duration_ms  = 18;
 constexpr uint16_t _miss_vibrate_duration_ms = 35;
 constexpr uint8_t _hit_vibrate_strength      = 60;
@@ -302,9 +303,21 @@ void SchulteView::init(lv_obj_t* parent)
     _density_hint_panel->removeFlag(LV_OBJ_FLAG_CLICKABLE);
     _density_hint_panel->addFlag(LV_OBJ_FLAG_HIDDEN);
 
+    _density_level_label = std::make_unique<Label>(_density_hint_panel->get());
+    _density_level_label->setSize(120, 34);
+    _density_level_label->align(LV_ALIGN_CENTER, 0, -58);
+    _density_level_label->setText("");
+    _density_level_label->setTextFont(&MontserratSemiBold26);
+    _density_level_label->setTextColor(lv_color_hex(_result_text_color));
+    _density_level_label->setTextAlign(LV_TEXT_ALIGN_CENTER);
+    lv_label_set_long_mode(_density_level_label->get(), LV_LABEL_LONG_CLIP);
+    lv_obj_set_style_bg_opa(_density_level_label->get(), LV_OPA_TRANSP, LV_PART_MAIN);
+    lv_obj_set_style_text_opa(_density_level_label->get(), _density_level_opa, LV_PART_MAIN);
+    lv_obj_remove_flag(_density_level_label->get(), LV_OBJ_FLAG_CLICKABLE);
+
     _density_hint_label = std::make_unique<Label>(_density_hint_panel->get());
     _density_hint_label->setSize(360, 112);
-    _density_hint_label->align(LV_ALIGN_CENTER, 0, 1);
+    _density_hint_label->align(LV_ALIGN_CENTER, 0, 19);
     _density_hint_label->setText("");
     _density_hint_label->setTextFont(&CommissionerMedium108);
     _density_hint_label->setTextColor(lv_color_hex(_result_text_color));
@@ -546,12 +559,14 @@ void SchulteView::createNumberLabels()
 
 void SchulteView::updateResultVisibility()
 {
-    if (_density_hint_panel && _density_hint_label) {
+    if (_density_hint_panel && _density_level_label && _density_hint_label) {
         if (_state == State::Idle) {
+            _density_level_label->setText("LV");
             _density_hint_label->setText(std::to_string(currentDensity()));
             lv_obj_remove_flag(_density_hint_panel->get(), LV_OBJ_FLAG_HIDDEN);
             _density_hint_panel->moveForeground();
         } else {
+            _density_level_label->setText("");
             _density_hint_label->setText("");
             lv_obj_add_flag(_density_hint_panel->get(), LV_OBJ_FLAG_HIDDEN);
         }

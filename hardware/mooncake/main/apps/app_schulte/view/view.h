@@ -102,6 +102,7 @@ private:
     std::unique_ptr<uitk::lvgl_cpp::Container> _flash_overlay;
     std::vector<LabelSlot> _number_labels;
     std::unique_ptr<uitk::lvgl_cpp::Container> _density_hint_panel;
+    std::unique_ptr<uitk::lvgl_cpp::Label> _density_level_label;
     std::unique_ptr<uitk::lvgl_cpp::Label> _density_hint_label;
     std::unique_ptr<uitk::lvgl_cpp::Container> _result_panel;
     std::unique_ptr<uitk::lvgl_cpp::Label> _result_label;
