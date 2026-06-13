@@ -30,7 +30,7 @@ constexpr float _radius_scale = static_cast<float>(_outer_radius) / 215.0f;
 
 constexpr uint32_t _screen_bg_color       = 0xF5EBD8;
 constexpr uint32_t _board_backdrop_color  = 0xF8EFDD;
-constexpr uint32_t _sector_fill_color     = 0xFBF4E6;
+constexpr uint32_t _sector_fill_color     = 0xF1F0E8;
 constexpr uint32_t _grid_color            = 0xB9CABE;
 constexpr uint32_t _grid_strong_color     = 0x9FB6AA;
 constexpr uint32_t _hit_fill_color        = 0xD2EADF;
@@ -40,7 +40,7 @@ constexpr uint32_t _miss_stroke_color     = 0xDF4E44;
 constexpr uint32_t _result_bg_color       = 0xFBF1E2;
 constexpr uint32_t _result_border_color   = 0x91AB9A;
 constexpr uint32_t _result_text_color     = 0x17201B;
-constexpr uint32_t _number_stroke_color   = 0xFBF4E6;
+constexpr uint32_t _number_stroke_color   = 0xF1F0E8;
 constexpr uint32_t _density_hint_color    = 0x58605B;
 constexpr lv_opa_t _density_hint_opa      = 107;
 constexpr uint16_t _hit_vibrate_duration_ms  = 18;
