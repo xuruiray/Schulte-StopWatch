@@ -40,8 +40,6 @@ constexpr uint32_t _miss_stroke_color     = 0xDF4E44;
 constexpr uint32_t _result_bg_color       = 0xFBF1E2;
 constexpr uint32_t _result_text_color     = 0x6A4632;
 constexpr uint32_t _number_stroke_color   = 0xFBF4E6;
-constexpr uint32_t _density_hint_color    = 0x58605B;
-constexpr lv_opa_t _density_hint_opa      = 107;
 constexpr lv_opa_t _result_bg_opa         = 199;
 constexpr uint16_t _hit_vibrate_duration_ms  = 18;
 constexpr uint16_t _miss_vibrate_duration_ms = 35;
@@ -292,21 +290,28 @@ void SchulteView::init(lv_obj_t* parent)
 
     createLabelPool();
 
-    _density_hint_label = std::make_unique<Label>(_panel->get());
-    _density_hint_label->setSize(240, 98);
-    _density_hint_label->align(LV_ALIGN_CENTER, 0, 3);
+    _density_hint_panel = std::make_unique<Container>(_panel->get());
+    _density_hint_panel->align(LV_ALIGN_CENTER, 0, 0);
+    _density_hint_panel->setSize(_panel_size, _panel_size);
+    _density_hint_panel->setRadius(LV_RADIUS_CIRCLE);
+    _density_hint_panel->setBorderWidth(0);
+    _density_hint_panel->setPaddingAll(0);
+    _density_hint_panel->setBgColor(lv_color_hex(_result_bg_color));
+    _density_hint_panel->setBgOpa(_result_bg_opa);
+    _density_hint_panel->removeFlag(LV_OBJ_FLAG_SCROLLABLE);
+    _density_hint_panel->removeFlag(LV_OBJ_FLAG_CLICKABLE);
+    _density_hint_panel->addFlag(LV_OBJ_FLAG_HIDDEN);
+
+    _density_hint_label = std::make_unique<Label>(_density_hint_panel->get());
+    _density_hint_label->setSize(360, 112);
+    _density_hint_label->align(LV_ALIGN_CENTER, 0, 1);
     _density_hint_label->setText("");
     _density_hint_label->setTextFont(&CommissionerMedium108);
-    _density_hint_label->setTextColor(lv_color_hex(_density_hint_color));
+    _density_hint_label->setTextColor(lv_color_hex(_result_text_color));
     _density_hint_label->setTextAlign(LV_TEXT_ALIGN_CENTER);
     lv_label_set_long_mode(_density_hint_label->get(), LV_LABEL_LONG_CLIP);
     lv_obj_set_style_bg_opa(_density_hint_label->get(), LV_OPA_TRANSP, LV_PART_MAIN);
-    lv_obj_set_style_text_opa(_density_hint_label->get(), _density_hint_opa, LV_PART_MAIN);
-    lv_obj_set_style_text_outline_stroke_color(_density_hint_label->get(), lv_color_hex(_density_hint_color), LV_PART_MAIN);
-    lv_obj_set_style_text_outline_stroke_width(_density_hint_label->get(), 1, LV_PART_MAIN);
-    lv_obj_set_style_text_outline_stroke_opa(_density_hint_label->get(), _density_hint_opa, LV_PART_MAIN);
     lv_obj_remove_flag(_density_hint_label->get(), LV_OBJ_FLAG_CLICKABLE);
-    lv_obj_add_flag(_density_hint_label->get(), LV_OBJ_FLAG_HIDDEN);
 
     _result_panel = std::make_unique<Container>(_panel->get());
     _result_panel->align(LV_ALIGN_CENTER, 0, 0);
@@ -541,14 +546,14 @@ void SchulteView::createNumberLabels()
 
 void SchulteView::updateResultVisibility()
 {
-    if (_density_hint_label) {
+    if (_density_hint_panel && _density_hint_label) {
         if (_state == State::Idle) {
             _density_hint_label->setText(std::to_string(currentDensity()));
-            lv_obj_remove_flag(_density_hint_label->get(), LV_OBJ_FLAG_HIDDEN);
-            _density_hint_label->moveForeground();
+            lv_obj_remove_flag(_density_hint_panel->get(), LV_OBJ_FLAG_HIDDEN);
+            _density_hint_panel->moveForeground();
         } else {
             _density_hint_label->setText("");
-            lv_obj_add_flag(_density_hint_label->get(), LV_OBJ_FLAG_HIDDEN);
+            lv_obj_add_flag(_density_hint_panel->get(), LV_OBJ_FLAG_HIDDEN);
         }
     }
 
