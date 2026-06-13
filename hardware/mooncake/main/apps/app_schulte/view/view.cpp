@@ -55,21 +55,21 @@ constexpr int _transition_ring_start_radius  = 18;
 constexpr std::array<int, 3> _density_cycle = {25, 18, 30};
 
 constexpr std::array<SchulteView::Ring, 3> _layout_18 = {{
-    {0.0f, 72.0f * _radius_scale, 4, -135.0f},
-    {72.0f * _radius_scale, 144.0f * _radius_scale, 6, -120.0f},
-    {144.0f * _radius_scale, static_cast<float>(_outer_radius), 8, -112.5f},
+    {0.0f, 78.0f * _radius_scale, 4, -135.0f},
+    {78.0f * _radius_scale, 148.0f * _radius_scale, 6, -120.0f},
+    {148.0f * _radius_scale, static_cast<float>(_outer_radius), 8, -112.5f},
 }};
 
 constexpr std::array<SchulteView::Ring, 3> _layout_25 = {{
     {0.0f, 78.0f * _radius_scale, 6, -120.0f},
-    {78.0f * _radius_scale, 145.0f * _radius_scale, 8, -112.5f},
-    {145.0f * _radius_scale, static_cast<float>(_outer_radius), 11, -106.36f},
+    {78.0f * _radius_scale, 148.0f * _radius_scale, 8, -112.5f},
+    {148.0f * _radius_scale, static_cast<float>(_outer_radius), 11, -106.36f},
 }};
 
 constexpr std::array<SchulteView::Ring, 3> _layout_30 = {{
-    {0.0f, 72.0f * _radius_scale, 6, -120.0f},
-    {72.0f * _radius_scale, 144.0f * _radius_scale, 10, -108.0f},
-    {144.0f * _radius_scale, static_cast<float>(_outer_radius), 14, -102.857142f},
+    {0.0f, 78.0f * _radius_scale, 6, -120.0f},
+    {78.0f * _radius_scale, 148.0f * _radius_scale, 10, -108.0f},
+    {148.0f * _radius_scale, static_cast<float>(_outer_radius), 14, -102.857142f},
 }};
 
 constexpr std::array<uint32_t, 7> _number_color_bases = {
