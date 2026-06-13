@@ -104,6 +104,7 @@ private:
     std::unique_ptr<uitk::lvgl_cpp::Label> _density_hint_label;
     std::unique_ptr<uitk::lvgl_cpp::Container> _result_panel;
     std::unique_ptr<uitk::lvgl_cpp::Label> _result_label;
+    std::unique_ptr<uitk::lvgl_cpp::Label> _result_unit_label;
     std::unique_ptr<uitk::lvgl_cpp::Container> _transition_overlay;
 
     State _state = State::Idle;

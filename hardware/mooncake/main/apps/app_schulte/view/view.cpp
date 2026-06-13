@@ -38,11 +38,11 @@ constexpr uint32_t _hit_stroke_color      = 0x0F8577;
 constexpr uint32_t _miss_fill_color       = 0xFBE0DA;
 constexpr uint32_t _miss_stroke_color     = 0xDF4E44;
 constexpr uint32_t _result_bg_color       = 0xFBF1E2;
-constexpr uint32_t _result_border_color   = 0x91AB9A;
-constexpr uint32_t _result_text_color     = 0x17201B;
+constexpr uint32_t _result_text_color     = 0x6A4632;
 constexpr uint32_t _number_stroke_color   = 0xFBF4E6;
 constexpr uint32_t _density_hint_color    = 0x58605B;
 constexpr lv_opa_t _density_hint_opa      = 107;
+constexpr lv_opa_t _result_bg_opa         = 199;
 constexpr uint16_t _hit_vibrate_duration_ms  = 18;
 constexpr uint16_t _miss_vibrate_duration_ms = 35;
 constexpr uint8_t _hit_vibrate_strength      = 60;
@@ -310,23 +310,36 @@ void SchulteView::init(lv_obj_t* parent)
 
     _result_panel = std::make_unique<Container>(_panel->get());
     _result_panel->align(LV_ALIGN_CENTER, 0, 0);
-    _result_panel->setSize(230, 72);
-    _result_panel->setRadius(14);
-    _result_panel->setBorderWidth(1);
-    _result_panel->setBorderColor(lv_color_hex(_result_border_color));
+    _result_panel->setSize(_panel_size, _panel_size);
+    _result_panel->setRadius(LV_RADIUS_CIRCLE);
+    _result_panel->setBorderWidth(0);
     _result_panel->setPaddingAll(0);
     _result_panel->setBgColor(lv_color_hex(_result_bg_color));
-    _result_panel->setBgOpa(LV_OPA_COVER);
+    _result_panel->setBgOpa(_result_bg_opa);
     _result_panel->removeFlag(LV_OBJ_FLAG_SCROLLABLE);
     _result_panel->removeFlag(LV_OBJ_FLAG_CLICKABLE);
 
     _result_label = std::make_unique<Label>(_result_panel->get());
-    _result_label->setSize(224, 58);
-    _result_label->align(LV_ALIGN_CENTER, 0, 0);
+    _result_label->setSize(360, 112);
+    _result_label->align(LV_ALIGN_CENTER, -20, 1);
     _result_label->setText("");
-    _result_label->setTextFont(&lv_font_maple_mono_medium_48);
+    _result_label->setTextFont(&CommissionerMedium108);
     _result_label->setTextColor(lv_color_hex(_result_text_color));
     _result_label->setTextAlign(LV_TEXT_ALIGN_CENTER);
+    lv_label_set_long_mode(_result_label->get(), LV_LABEL_LONG_CLIP);
+    lv_obj_set_style_bg_opa(_result_label->get(), LV_OPA_TRANSP, LV_PART_MAIN);
+    _result_label->removeFlag(LV_OBJ_FLAG_CLICKABLE);
+
+    _result_unit_label = std::make_unique<Label>(_result_panel->get());
+    _result_unit_label->setSize(56, 56);
+    _result_unit_label->align(LV_ALIGN_CENTER, 158, 25);
+    _result_unit_label->setText("");
+    _result_unit_label->setTextFont(&lv_font_maple_mono_medium_48);
+    _result_unit_label->setTextColor(lv_color_hex(_result_text_color));
+    _result_unit_label->setTextAlign(LV_TEXT_ALIGN_LEFT);
+    lv_label_set_long_mode(_result_unit_label->get(), LV_LABEL_LONG_CLIP);
+    lv_obj_set_style_bg_opa(_result_unit_label->get(), LV_OPA_TRANSP, LV_PART_MAIN);
+    _result_unit_label->removeFlag(LV_OBJ_FLAG_CLICKABLE);
 
     _transition_overlay = std::make_unique<Container>(_panel->get());
     _transition_overlay->setPos(0, 0);
@@ -418,7 +431,14 @@ void SchulteView::finishGame()
     _stop_time = GetHAL().millis() - _start_time;
     _state = State::Result;
     if (_result_label) {
-        _result_label->setText(formatTime(_stop_time));
+        std::string time_text = formatTime(_stop_time);
+        if (!time_text.empty() && time_text.back() == 's') {
+            time_text.pop_back();
+        }
+        _result_label->setText(time_text);
+    }
+    if (_result_unit_label) {
+        _result_unit_label->setText("s");
     }
     stopTransition();
     updateResultVisibility();
@@ -543,6 +563,9 @@ void SchulteView::updateResultVisibility()
         lv_obj_add_flag(_result_panel->get(), LV_OBJ_FLAG_HIDDEN);
         if (_result_label) {
             _result_label->setText("");
+        }
+        if (_result_unit_label) {
+            _result_unit_label->setText("");
         }
     }
 }
